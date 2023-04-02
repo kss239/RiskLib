@@ -2,7 +2,6 @@
 
 RiskLib is currently a work in progress barebones Julia package that currently provides portfolio optimization techniques using variaous risk measures for financial asset allocation.  The package contains two main files: measures.jl and RiskLib.jl.
 
-~~~
 ## Describe
 
 ### measures.jl
