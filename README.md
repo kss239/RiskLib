@@ -62,7 +62,7 @@ returns = [
 ~~~
 begin to call functions from the package and specify for each function each parameter
 ~~~
-mean_risk_optimization_montecarlo(returns, value_at_risk, "max_utility", lambda=0.5)
+mean_risk_optimization_montecarlo(returns, variance, "max_utility", lambda=0.5)
 ~~~
 this will return the found asset weights that fulfill the objective function use of the risk metric.
 
