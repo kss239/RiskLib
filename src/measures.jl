@@ -14,11 +14,13 @@ export second_lower_partial_moment
 export value_at_risk
 export cvar
 export tail_gini
+export entropic_value_at_risk
 export worst_case_realization
 export maximum_drawdown
 export calmar_ratio
 export average_drawdown
 export cdrawdown_at_risk
+export entropic_drawdown_at_risk
 export ulcer_index
 
     using Statistics
@@ -39,7 +41,7 @@ export ulcer_index
     Calculate the square root kurtosis of the given `returns` vector.
     Square root kurtosis is a measure of the tail risk, indicating the likelihood of extreme events.
     """
-        return sqrt(abs(kurtosis(returns)))
+        return sqrt(kurtosis(returns))
     end
 
     function mean_absolute_deviation(returns)
@@ -147,6 +149,16 @@ export ulcer_index
         return tail_gini_range(returns, alpha)
     end
 
+    function entropic_value_at_risk(returns, alpha=0.05)
+    """
+    Calculate the Entropic Value at Risk (EVaR) of the given `returns` vector at the specified `alpha` level.
+    EVaR is a coherent risk measure that takes into account the entire distribution of returns, providing a more robust estimate of extreme losses.
+    """
+        n = length(returns)
+        lambda = fzero(x -> sum(exp.(-(returns .- x) ./ x)) ./ n - alpha, -minimum(returns), minimum(returns))
+        return lambda
+    end
+
     function worst_case_realization(returns)
     """
     Calculate the worst case realization (minimax) of the given `returns` vector.
@@ -205,6 +217,16 @@ export ulcer_index
         cumulative_returns = cumsum(returns) # Calculate cumulative returns
         drawdowns = [maximum(cumulative_returns[1:i]) - cumulative_returns[i] for i in 1:length(cumulative_returns)] # Change from returns to cumulative_returns
         return quantile(drawdowns, alpha)
+    end
+
+    function entropic_drawdown_at_risk(returns, alpha=0.05)
+    """
+    Calculate the Entropic Drawdown at Risk (EDaR) of the given `returns` vector at the specified `alpha` level.
+    EDaR is a coherent drawdown risk measure that takes into account the entire distribution of drawdowns, providing a more robust estimate of extreme drawdowns.
+    """
+        cumulative_returns = cumsum(returns) # Calculate cumulative returns
+        drawdowns = [maximum(cumulative_returns[1:i]) - cumulative_returns[i] for i in 1:length(cumulative_returns)] # Change from returns to cumulative_returns
+        return entropic_value_at_risk(drawdowns, alpha)
     end
 
     function ulcer_index(returns)

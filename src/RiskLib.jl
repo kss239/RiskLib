@@ -28,7 +28,17 @@ export cdrawdown_at_risk
 export entropic_drawdown_at_risk
 export ulcer_index
 #optimizer
-export mean_risk_optimization_montecarlo
-export risk_parity_optimization_montecarlo
+export RiskMeasure
+export mean_risk_optimization
+export logarithmic_mean_risk_optimization
+export risk_parity_optimization
+#analysis
+export portfolio_risk
+export portfolio_return
+export portfolio_log_return
+export portfolio_performance
+export efficient_frontier
+export monte_carlo_scenario_analysis
+
 
 end
